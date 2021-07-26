@@ -10,14 +10,11 @@ function print(text) {
  * чтобы функция sayHello работала корректно
  */
 function isValid(name) {
-  if (name === null) {
-    return false;
-  } else if (name.length <= 3) {
-    return false;
-  } else if (name.indexOf(' ') >= 0) {
-    return false;
+  const isCorrect = name && name.length > 3 && name.indexOf(' ') < 0;
+  if (isCorrect) {
+    return true;
   }
-  return true;
+  return false;
 }
 
 function sayHello() {
