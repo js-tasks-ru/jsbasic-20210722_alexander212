@@ -1,6 +1,6 @@
 function showSalary(users, age) {
   const filteredUsers = users.filter((user) => user.age <= age);
-  return filteredUsers.reduce((acc, user) => {
-    return [...acc, `${user.name}, ${user.balance}\n`];
-  }, []).join('').trim();
+  return filteredUsers.map((user) => {
+    return `${user.name}, ${user.balance}`;
+  }, []).join('\n');
 }

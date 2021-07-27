@@ -1,8 +1,6 @@
 const capitalLetter = (str) => {
-  const arr = str.split('');
-  const firstLetter = arr.shift().toUpperCase();
-  arr.unshift(firstLetter);
-  return arr.join('');
+  const firstChar = str[0].toUpperCase();
+  return `${firstChar}${str.slice(1)}`;
 }
 
 function camelize(str) {
