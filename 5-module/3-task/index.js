@@ -6,7 +6,7 @@ function initCarousel() {
   const btnRight = document.querySelector('.carousel__arrow_right');
   btnLeft.style.display = 'none';
 
-  const slideWidth = slides[0].offsetWidth;
+  const slideWidth = containerSlides.offsetWidth;
   let currentSlideCount = 1;
   let currentOffset = 0;
 
