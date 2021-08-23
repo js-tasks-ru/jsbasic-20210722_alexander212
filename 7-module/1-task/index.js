@@ -2,8 +2,7 @@ import createElement from '../../assets/lib/create-element.js';
 
 export default class RibbonMenu {
   constructor(categories) {
-    this.categories = categories;
-    this.elem = this.createMenu(categories)
+    this.createMenu(categories);
   }
 
   createBtn(direction) {
@@ -11,7 +10,7 @@ export default class RibbonMenu {
     <button class="ribbon__arrow ribbon__arrow_${direction}">
       <img src="/assets/images/icons/angle-icon.svg" alt="icon">
     </button>
-    `
+    `;
     const elementBtn = createElement(template);
     return elementBtn;
   }
@@ -19,13 +18,13 @@ export default class RibbonMenu {
   createLink(options) {
     const template = `
     <a href="#" class="ribbon__item" data-id="${options.id}">${options.name}</a>
-    `
+    `;
     const link = createElement(template);
     return link;
   }
 
   createMenu(coll) {
-    const menu = document.createElement('div');
+    this.elem = document.createElement('div');
     const btnRight = this.createBtn('right');
     const btnLeft = this.createBtn('left');
     const containerLinks = document.createElement('nav');
@@ -47,7 +46,7 @@ export default class RibbonMenu {
       }
 
     };
-    menu.addEventListener('click', (e) => {
+    this.elem.addEventListener('click', (e) => {
       if (e.target.closest('.ribbon__arrow_right')) {
         containerLinks.scrollBy(350, 0);
       }
@@ -68,22 +67,21 @@ export default class RibbonMenu {
           detail: id,
           bubbles: true,
         });
-        menu.dispatchEvent(customEvent);
+        this.elem.dispatchEvent(customEvent);
       }
-    })
+    });
     
     btnRight.classList.add('ribbon__arrow_visible');
-    menu.classList.add('ribbon');
+    this.elem.classList.add('ribbon');
     containerLinks.classList.add('ribbon__inner');
-    menu.append(btnLeft);
+    this.elem.append(btnLeft);
 
     for (let i = 0; i < coll.length; i += 1) {
       const link = this.createLink(coll[i]);
       containerLinks.append(link);
     }
 
-    menu.append(containerLinks);
-    menu.append(btnRight);
-    return menu;
+    this.elem.append(containerLinks);
+    this.elem.append(btnRight);
   }
 }

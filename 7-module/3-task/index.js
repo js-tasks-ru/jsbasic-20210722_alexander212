@@ -4,10 +4,11 @@ export default class StepSlider {
   constructor({ steps, value = 0 }) {
     this.steps = steps;
     this.value = value;
-    this.elem = this.render();
+    this.createSlider();
+    this.onClick();
   }
 
-  render() {
+  createSlider() {
     const template = `
     <!--Корневой элемент слайдера-->
   <div class="slider">
@@ -25,8 +26,8 @@ export default class StepSlider {
     </div>
   </div>
     `;
-    const slider = createElement(template);
-    const sliderSteps = slider.querySelector('.slider__steps');
+    this.elem = createElement(template);
+    const sliderSteps = this.elem.querySelector('.slider__steps');
     for (let i = 0; i < this.steps; i += 1) {
       const stepElem = document.createElement('span');
       sliderSteps.append(stepElem);
@@ -34,17 +35,15 @@ export default class StepSlider {
         stepElem.classList.add('slider__step-active');
       }
     }
-    this.changingStep(slider);
-    return slider;
   }
 
-  changingStep(elem) {
-    const elements = elem.querySelectorAll('.slider__steps span');
-    elem.addEventListener('click', (e) => {
+  onClick() {
+    const elements = this.elem.querySelectorAll('.slider__steps span');
+    this.elem.addEventListener('click', (e) => {
       const steps = elements.length - 1;
-      const offsetContainer = elem.getBoundingClientRect().left;
+      const offsetContainer = this.elem.getBoundingClientRect().left;
       const clickX = e.clientX - offsetContainer;
-      const leftRelative = clickX / elem.offsetWidth;
+      const leftRelative = clickX / this.elem.offsetWidth;
       const value = Math.round(leftRelative * steps);
       const sliderValue = document.querySelector('.slider__value');
       const sliderThumb = document.querySelector('.slider__thumb');
@@ -56,7 +55,7 @@ export default class StepSlider {
         detail: value,
         bubbles: true,
       });
-      elem.dispatchEvent(sliderChange);
+      this.elem.dispatchEvent(sliderChange);
     });
   }
 }
