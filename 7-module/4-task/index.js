@@ -45,15 +45,15 @@ export default class StepSlider {
       const offsetContainer = this.elem.getBoundingClientRect().left;
       const clickX = e.clientX - offsetContainer;
       const leftRelative = clickX / this.elem.offsetWidth;
-      const value = Math.round(leftRelative * steps);
+      this.value = Math.round(leftRelative * steps);
       const sliderValue = document.querySelector('.slider__value');
       const sliderThumb = document.querySelector('.slider__thumb');
       const sliderProgress = document.querySelector('.slider__progress');
-      sliderValue.textContent = value;
-      sliderThumb.style.left = `${value / steps * 100}%`;
-      sliderProgress.style.width = `${value / steps * 100}%`;
+      sliderValue.textContent = this.value;
+      sliderThumb.style.left = `${this.value / steps * 100}%`;
+      sliderProgress.style.width = `${this.value / steps * 100}%`;
       const sliderChange = new CustomEvent('slider-change', {
-        detail: value,
+        detail: this.value,
         bubbles: true,
       });
       this.elem.dispatchEvent(sliderChange);
@@ -74,22 +74,21 @@ export default class StepSlider {
         e.preventDefault();
         const currentPosition = e.clientX - coordsContainer.left;
         const leftRelative = currentPosition / coordsContainer.width;
-        let value = Math.round(leftRelative * steps);
+        this.value = Math.round(leftRelative * steps);
         if (leftRelative < 0 || e.clientX < coordsContainer.left) {
           thumb.style.left = '0%';
           progress.style.width = '0%';
-          value = 0;
+          this.value = 0;
         } else if (leftRelative > 1 || e.clientX > coordsContainer.right) {
           thumb.style.left = '100%';
           progress.style.width = '100%';
-          value = steps;
+          this.value = steps;
         } else {
           thumb.style.left = `${leftRelative * 100}%`;
           progress.style.width = `${leftRelative * 100}%`;
         }
         this.elem.classList.add('slider_dragging');
-        sliderValue.textContent = value;
-        this.value = value;
+        sliderValue.textContent = this.value;
       };
 
       document.documentElement.addEventListener('pointermove', move);
