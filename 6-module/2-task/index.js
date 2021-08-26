@@ -24,16 +24,19 @@ export default class ProductCard {
     </div>
     `;
     const card = createElement(htmlCard);
-    card.addEventListener('click', (e) => {
-      if (e.target.closest('.card__button')) {
-        const eventAdd = new CustomEvent('product-add', {
-          detail: template.id,
-          bubbles: true,
-        });
-        card.dispatchEvent(eventAdd);
-      }
-    });
+    const productId = template.id;
+    this.productAdd(card, productId);
     return card;
   }
-
+  productAdd(elem, id) {
+    elem.addEventListener('click', (e) => {
+      if (e.target.closest('.card__button')) {
+        const eventAdd = new CustomEvent('product-add', {
+          detail: id,
+          bubbles: true,
+        });
+        elem.dispatchEvent(eventAdd);
+      }
+    });
+  }
 }

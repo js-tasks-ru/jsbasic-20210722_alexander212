@@ -31,19 +31,8 @@ export default class Modal {
     const title = modal.querySelector('.modal__title');
     const body = modal.querySelector('.modal__body');
     const modalClose = modal.querySelector('.modal__close');
-    const close = () => {
-      document.body.classList.remove('is-modal-open');
-      modal.remove();
-    };
-    const keyClose = (e) => {
-      if (e.code === 'Escape') {
-        document.body.classList.remove('is-modal-open');
-        modal.remove();
-        document.removeEventListener('keydown', keyClose);
-      }
-    };
-    modalClose.addEventListener('click', close);
-    document.addEventListener('keydown', keyClose);
+    modalClose.addEventListener('click', this.close);
+    document.addEventListener('keydown', this.close);
     title.textContent = this.modalTitle;
     body.innerHTML = '';
     body.append(this.modalBody);
@@ -51,7 +40,7 @@ export default class Modal {
     document.body.classList.add('is-modal-open');
     document.body.append(modal);
   }
-  
+
   setTitle(title) {
     this.modalTitle = title;
     const titleElem = document.querySelector('.modal__title');
@@ -69,11 +58,14 @@ export default class Modal {
     }
   }
 
-  close() {
+  close(e) {
     const modal = document.querySelector('.modal');
     if (modal) {
-      document.body.classList.remove('is-modal-open');
-      modal.remove();
+      if (!e || !e.code || e.code === 'Escape') {
+        document.removeEventListener('keydown', close);
+        document.body.classList.remove('is-modal-open');
+        modal.remove();
+      }
     }
   }
 }
