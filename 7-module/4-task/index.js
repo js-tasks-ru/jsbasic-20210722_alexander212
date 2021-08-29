@@ -91,7 +91,7 @@ export default class StepSlider {
         sliderValue.textContent = this.value;
       };
 
-      document.documentElement.addEventListener('pointermove', move);
+      document.addEventListener('pointermove', move);
 
       document.documentElement.onpointerup = () => {
         const sliderChange = new CustomEvent('slider-change', {
