@@ -5,59 +5,49 @@ export default class ProductGrid {
   constructor(products) {
     this.products = products;
     this.filters = {};
-    this.render();
-  }
-
-  render() {
     this.elem = createElement(`<div class="products-grid">
     <div class="products-grid__inner">
     </div>
     </div>`);
-    this.elem.querySelector('.products-grid__inner').append(this.createProducts(this.products));
+    this.render(products);
   }
 
-  createProducts(products) {
-    const container = document.createDocumentFragment();
+  render(products) {
+    const container = this.elem.querySelector('.products-grid__inner');
+    container.innerHTML = '';
     products.forEach((product) => {
-      const newProduct = new ProductCard(product);
-      container.append(newProduct.elem);
+      const productCard = new ProductCard(product);
+      container.append(productCard.elem);
     });
-    return container;
   }
 
   updateFilter(filters) {
-    const container = this.elem.querySelector('.products-grid__inner');
     this.filters = {...this.filters, ...filters};
     const keys = Object.keys(this.filters);
     let result = this.products.filter((p) => {
-      for (let key of keys) {
-        switch (key) {
-        case 'noNuts':
-          if (!p['nuts']) {
-            break;
+      let count = true;
+      for (let i = 0; i < keys.length; i += 1) {
+        if (keys[i] === 'noNuts' && this.filters[keys[i]]) {
+          if (p['nuts']) {
+            count = false;
           }
-        case 'vegeterianOnly':
-          if (p['vegeterian']) {
-            break;
+          
+        } else if (keys[i] === 'vegeterianOnly' && this.filters[keys[i]]) {
+          if (!p['vegeterian']) {
+            count = false;
           }
-        case 'maxSpiciness':
-          if (p['spiciness'] <= this.filters[key]) {
-            break;
+        } else if (keys[i] === 'maxSpiciness') {
+          if (p['spiciness'] > this.filters[keys[i]]) {
+            count = false;
           }
-        case 'category':
-          const categoryFilter = this.filters[key];
-          if (!categoryFilter) {
-            break;
-          } else if (p['category'] === this.filters['category']) {
-            break;
+        } else if (keys[i] === 'category') {
+          if (p['category'] !== this.filters[keys[i]] && !!this.filters[keys[i]]) {
+            count = false;
           }
-        default:
-          return false;
         }
       }
-      return true;
+      return count;
     });
-    container.innerHTML = '';
-    container.append(this.createProducts(result));
+    this.render(result);
   }
 }

@@ -10,21 +10,24 @@ export default class Cart {
       return;
     }
     let isContain = false;
-    if (this.cartItems.length >= 1) {
+    let cartItem = {};
+    if (this.cartItems.length > 0) {
       this.cartItems.forEach((i) => {
         if (i.product.id === product.id) {
           i.count += 1;
+          cartItem = i;
           isContain = true;
         }
       });
     }
     if (!isContain) {
-      this.cartItems.push({
+      cartItem = {
         product,
         count: 1,
-      });
+      };
+      this.cartItems.push(cartItem);
     }
-    console.log(this.cartItems)
+    this.onProductUpdate(cartItem);
   }
 
   updateProductCount(productId, amount) {
@@ -36,13 +39,13 @@ export default class Cart {
         } else {
           item.count = count;
         }
+        this.onProductUpdate(item);
       }
     });
-    console.log(this.cartItems)
   }
 
   isEmpty() {
-    return this.cartItems.length > 0;
+    return this.cartItems.length === 0;
   }
 
   getTotalCount() {
