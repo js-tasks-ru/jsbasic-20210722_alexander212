@@ -2,14 +2,16 @@ import createElement from '../../assets/lib/create-element.js';
 
 export default class ProductCard {
   constructor(product) {
-    this.elem = this.createCard(product);
+    this.product = product;
+    this.createCard();
   }
 
-  createCard(template) {
-    const imgName = template.image;
-    const price = template.price.toFixed(2);
-    const productName = template.name;
-    const htmlCard = `
+  createCard() {
+    const imgName = this.product.image;
+    const price = this.product.price.toFixed(2);
+    const productName = this.product.name;
+    const productId = this.product.id;
+    const template = `
     <div class="card">
       <div class="card__top">
         <img src="/assets/images/products/${imgName}" class="card__image" alt="product">
@@ -23,10 +25,8 @@ export default class ProductCard {
       </div>
     </div>
     `;
-    const card = createElement(htmlCard);
-    const productId = template.id;
-    this.productAdd(card, productId);
-    return card;
+    this.elem = createElement(template);
+    this.productAdd(this.elem, productId);
   }
   productAdd(elem, id) {
     elem.addEventListener('click', (e) => {
